@@ -1,8 +1,6 @@
-import { useCallback, useContext, useState } from 'react'
 import { makeStyles, Persona, tokens } from '@fluentui/react-components'
 import { Hamburger } from '@fluentui/react-nav-preview'
-import { NavigationContext } from '../../providers'
-import { Navigator } from './navigator'
+
 
 export type AppBarProps = {
   systemName: string
@@ -16,6 +14,10 @@ export type AppBarProps = {
     }
   }
 }
+
+type InternalAppBarProps = {
+  onHambugerClick: () => void
+} & AppBarProps
 
 const useClasses = makeStyles({
   root: {
@@ -44,26 +46,13 @@ const useClasses = makeStyles({
   },
 })
 
-export const AppBar = (props: AppBarProps) => {
+export const AppBar = (props: InternalAppBarProps) => {
   const classes = useClasses()
-  const navigationContext = useContext(NavigationContext)
-
-  const [navigatorOpen, setNavigatorOpen] = useState(false)
-
-  const handleHambugerClick = useCallback(() => {
-    setNavigatorOpen(!navigatorOpen)
-  }, [navigatorOpen])
 
   return (
     <>
-      <Navigator
-        {...props}
-        open={navigatorOpen}
-        navigationGroups={navigationContext.groups}
-        onHambugerClick={handleHambugerClick}
-      />
       <header className={classes.root}>
-        <Hamburger className={classes.hambuger} onClick={handleHambugerClick} />
+        <Hamburger className={classes.hambuger} onClick={props.onHambugerClick} />
         <h2 className={classes.systemName}>{props.systemName}</h2>
         {props.authentication.requireAuthentication ? (
           props.authentication.isAuthenticated ? (

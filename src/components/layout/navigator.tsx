@@ -1,5 +1,11 @@
 import { Tooltip } from '@fluentui/react-components'
-import { AppItem, Hamburger, NavDrawer, NavDrawerBody, NavDrawerHeader } from '@fluentui/react-nav-preview'
+import {
+  AppItem,
+  Hamburger,
+  NavDrawer,
+  NavDrawerBody,
+  NavDrawerHeader,
+} from '@fluentui/react-nav-preview'
 import { NavigationGroup } from '../../providers'
 
 export type NavigatorProps = {
@@ -7,6 +13,7 @@ export type NavigatorProps = {
   systemName: string
   navigationGroups: NavigationGroup[]
   onHambugerClick: () => void
+  onOpenChange: (open: boolean) => void
 }
 
 export const Navigator = (props: NavigatorProps) => {
@@ -18,7 +25,11 @@ export const Navigator = (props: NavigatorProps) => {
 
   return (
     <nav>
-      <NavDrawer open={props.open}>
+      <NavDrawer
+        open={props.open}
+        onOpenChange={(_, { open }) => props.onOpenChange(open)}
+        separator
+      >
         <NavDrawerHeader>{HambugerWithTooltip}</NavDrawerHeader>
 
         <NavDrawerBody>
