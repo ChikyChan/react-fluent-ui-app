@@ -1,6 +1,15 @@
-import { makeStyles, Persona, tokens } from '@fluentui/react-components'
+import {
+  Button,
+  makeStyles,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuPopover,
+  MenuTrigger,
+  Persona,
+  tokens,
+} from '@fluentui/react-components'
 import { Hamburger } from '@fluentui/react-nav-preview'
-
 
 export type AppBarProps = {
   systemName: string
@@ -41,9 +50,6 @@ const useClasses = makeStyles({
   userInfoPrimaryText: {
     color: tokens.colorNeutralForegroundOnBrand,
   },
-  signInButton: {
-    color: tokens.colorNeutralForegroundOnBrand,
-  },
 })
 
 export const AppBar = (props: InternalAppBarProps) => {
@@ -52,24 +58,36 @@ export const AppBar = (props: InternalAppBarProps) => {
   return (
     <>
       <header className={classes.root}>
-        <Hamburger className={classes.hambuger} onClick={props.onHambugerClick} />
+        <Hamburger
+          className={classes.hambuger}
+          onClick={props.onHambugerClick}
+        />
         <h2 className={classes.systemName}>{props.systemName}</h2>
         {props.authentication.requireAuthentication ? (
           props.authentication.isAuthenticated ? (
-            <Persona
-              avatar={{
-                image: {
-                  src: props.authentication.currentUser.avatar,
-                },
-              }}
-              primaryText={{
-                className: classes.userInfoPrimaryText,
-              }}
-              name={props.authentication.currentUser.displayName}
-              textAlignment="center"
-            />
+            <Menu>
+              <MenuTrigger disableButtonEnhancement>
+                <MenuButton appearance='transparent' menuIcon={null}>
+                  <Persona
+                    avatar={{
+                      image: {
+                        src: props.authentication.currentUser.avatar,
+                      },
+                    }}
+                    primaryText={{
+                      className: classes.userInfoPrimaryText,
+                    }}
+                    name={props.authentication.currentUser.displayName}
+                    textAlignment="center"
+                  />
+                </MenuButton>
+              </MenuTrigger>
+              <MenuPopover>
+                <MenuItem>Sign Out</MenuItem>
+              </MenuPopover>
+            </Menu>
           ) : (
-            <button className={classes.signInButton}>Sign in</button>
+            <Button appearance="transparent">Sign In</Button>
           )
         ) : null}
       </header>
