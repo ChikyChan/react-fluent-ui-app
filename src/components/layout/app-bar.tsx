@@ -60,6 +60,7 @@ export const AppBar = (props: AppBarProps) => {
         {...props}
         open={navigatorOpen}
         navigationGroups={navigationContext.groups}
+        onHambugerClick={handleHambugerClick}
       />
       <header className={classes.root}>
         <Hamburger className={classes.hambuger} onClick={handleHambugerClick} />
