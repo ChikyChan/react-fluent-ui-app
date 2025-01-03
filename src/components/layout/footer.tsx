@@ -9,7 +9,7 @@ const useClasses = makeStyles({
   root: {
     backgroundColor: tokens.colorBrandBackground,
     color: tokens.colorNeutralForegroundOnBrand,
-    flex: 1,
+    flex: 0,
     padding: `${tokens.spacingHorizontalXS} 0`,
     textAlign: 'center',
   },

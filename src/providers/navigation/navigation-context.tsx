@@ -1,6 +1,4 @@
 import { createContext } from 'react'
-import { NavigationProviderType } from './types'
+import { NavigationGroup, NavigationItem, NavigationItemWithChildren } from './types'
 
-export const NavigationContext = createContext<NavigationProviderType>({
-  groups: [],
-})
+export const NavigationContext = createContext<(NavigationGroup | NavigationItemWithChildren | NavigationItem)[]>([])

@@ -22,6 +22,8 @@ export type AppBarProps = {
       avatar?: string
     }
   }
+  handleSignIn: () => void
+  handleSignOut: () => void
 }
 
 type InternalAppBarProps = {
@@ -34,7 +36,7 @@ const useClasses = makeStyles({
     color: tokens.colorNeutralForegroundOnBrand,
     display: 'flex',
     flexDirection: 'row',
-    flex: 1,
+    flex: 0,
     padding: `0 ${tokens.spacingHorizontalL}`,
   },
   hambuger: {
@@ -67,7 +69,7 @@ export const AppBar = (props: InternalAppBarProps) => {
           props.authentication.isAuthenticated ? (
             <Menu>
               <MenuTrigger disableButtonEnhancement>
-                <MenuButton appearance='transparent' menuIcon={null}>
+                <MenuButton appearance="transparent" menuIcon={null}>
                   <Persona
                     avatar={{
                       image: {
@@ -83,11 +85,13 @@ export const AppBar = (props: InternalAppBarProps) => {
                 </MenuButton>
               </MenuTrigger>
               <MenuPopover>
-                <MenuItem>Sign Out</MenuItem>
+                <MenuItem onClick={props.handleSignOut}>Sign Out</MenuItem>
               </MenuPopover>
             </Menu>
           ) : (
-            <Button appearance="transparent">Sign In</Button>
+            <Button appearance="primary" onClick={props.handleSignIn}>
+              Sign In
+            </Button>
           )
         ) : null}
       </header>

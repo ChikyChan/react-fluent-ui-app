@@ -1,17 +1,34 @@
+import { FluentIcon } from "@fluentui/react-icons"
+
 export type NavigationGroup = {
-  items: NavigationItem[]
+  title: string
+  items: (NavigationItemWithChildren | NavigationItem)[]
 }
 
-type NavigationItem = {
-  children: NavigationSubItem[]
-} & NavigationSubItem
+export type NavigationItemWithChildren = {
+  children: NavigationItem[]
+} & NavigationItem
 
-type NavigationSubItem = {
-  icon: string
-  url: string
+export type NavigationItem = {
+  icon?: FluentIcon
+  url?: string
   title: string
 }
 
-export type NavigationProviderType = {
-  groups: NavigationGroup[]
+export const isNavigationGroup = (
+  item: NavigationGroup | NavigationItemWithChildren | NavigationItem,
+): item is NavigationGroup => {
+  return 'items' in item
+}
+
+export const isNavigationItemWithChildren = (
+  item: NavigationGroup | NavigationItemWithChildren | NavigationItem,
+): item is NavigationItemWithChildren => {
+  return 'children' in item
+}
+
+export const isNavigationItem = (
+  item: NavigationGroup | NavigationItemWithChildren | NavigationItem,
+): item is NavigationItem => {
+  return !('children' in item)
 }

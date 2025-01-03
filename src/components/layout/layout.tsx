@@ -13,12 +13,13 @@ const useClasses = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     maxHeight: '100vh',
+    height: '100vh',
   },
 })
 
 export const Layout = (props: LayoutProps) => {
   const classes = useClasses()
-  const navigationContext = useContext(NavigationContext)
+  const navigationItems = useContext(NavigationContext)
 
   const [navigatorOpen, setNavigatorOpen] = useState(false)
 
@@ -35,7 +36,7 @@ export const Layout = (props: LayoutProps) => {
       <Navigator
         {...props}
         open={navigatorOpen}
-        navigationGroups={navigationContext.groups}
+        navigationItems={navigationItems}
         onHambugerClick={handleHambugerClick}
         onOpenChange={onNavigatorOpenChange}
       />
