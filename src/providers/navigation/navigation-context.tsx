@@ -1,4 +1,13 @@
 import { createContext } from 'react'
-import { NavigationContextItemCollectionType } from './types'
+import { createBrowserRouter } from 'react-router-dom'
+import { NavigationContextType } from './types'
 
-export const NavigationContext = createContext<NavigationContextItemCollectionType>([])
+export const NavigationContext = createContext<NavigationContextType>({
+  items: [],
+  router: createBrowserRouter([
+    {
+      path: '',
+      element: <></>,
+    },
+  ]),
+})

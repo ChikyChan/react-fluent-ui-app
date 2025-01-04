@@ -1,12 +1,13 @@
-import { PropsWithChildren, useCallback, useContext, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import { makeStyles } from '@fluentui/react-components'
+import { RouterProvider } from 'react-router-dom'
 import { NavigationContext } from '../../providers'
 import { AppBar, AppBarProps } from './app-bar'
 import { Content, ContentProps } from './content'
 import { Footer, FooterProps } from './footer'
 import { Navigator } from './navigator'
 
-type LayoutProps = AppBarProps & FooterProps & ContentProps & PropsWithChildren
+type LayoutProps = AppBarProps & FooterProps & ContentProps
 
 const useClasses = makeStyles({
   root: {
@@ -19,7 +20,7 @@ const useClasses = makeStyles({
 
 export const Layout = (props: LayoutProps) => {
   const classes = useClasses()
-  const navigationItems = useContext(NavigationContext)
+  const navigationContext = useContext(NavigationContext)
 
   const [navigatorOpen, setNavigatorOpen] = useState(false)
 
@@ -36,12 +37,14 @@ export const Layout = (props: LayoutProps) => {
       <Navigator
         {...props}
         open={navigatorOpen}
-        navigationItems={navigationItems}
+        navigationItems={navigationContext.items}
         onHambugerClick={handleHambugerClick}
         onOpenChange={onNavigatorOpenChange}
       />
       <AppBar {...props} onHambugerClick={handleHambugerClick} />
-      <Content>{props.children}</Content>
+      <Content>
+        <RouterProvider router={navigationContext.router} />
+      </Content>
       <Footer {...props} />
     </div>
   )

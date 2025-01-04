@@ -23,9 +23,7 @@ function App() {
           copyRight="© 2024 Chiky Chen"
           handleSignIn={() => setIsAuthenticated(true)}
           handleSignOut={() => setIsAuthenticated(false)}
-        >
-          <h1>Hello, World!</h1>
-        </Layout>
+         />
       </NavigationProvider>
     </FluentProvider>
   )
