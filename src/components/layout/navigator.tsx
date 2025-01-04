@@ -1,10 +1,16 @@
 import { useCallback, useMemo } from 'react'
 import { Tooltip } from '@fluentui/react-components'
 import {
+  bundleIcon,
+  Dismiss20Filled,
+  Dismiss20Regular,
+} from '@fluentui/react-icons'
+import {
   AppItemStatic,
   Hamburger,
   NavCategory,
   NavCategoryItem,
+  NavDivider,
   NavDrawer,
   NavDrawerBody,
   NavDrawerHeader,
@@ -17,6 +23,7 @@ import {
   isNavigationGroup,
   isNavigationItem,
   isNavigationItemWithChildren,
+  NavigationContextItemCollectionType,
   NavigationGroup,
   NavigationItem,
   NavigationItemWithChildren,
@@ -25,16 +32,14 @@ import {
 export type NavigatorProps = {
   open: boolean
   systemName: string
-  navigationItems: (
-    | NavigationGroup
-    | NavigationItemWithChildren
-    | NavigationItem
-  )[]
+  navigationItems: NavigationContextItemCollectionType
   onHambugerClick: () => void
   onOpenChange: (open: boolean) => void
 }
 
 export const Navigator = (props: NavigatorProps) => {
+  const Dismiss = bundleIcon(Dismiss20Filled, Dismiss20Regular)
+
   const HambugerWithTooltip = useMemo(
     () => (
       <Tooltip content={props.systemName} relationship="label">
@@ -47,12 +52,12 @@ export const Navigator = (props: NavigatorProps) => {
   const renderNavigationItem = useCallback(
     (it: NavigationItem) => (
       <>
-        <NavItem icon={it.icon && <it.icon />} value={it.title}>
+        <NavItem icon={it.icon ? <it.icon /> : <Dismiss />} value={it.title}>
           {it.title}
         </NavItem>
       </>
     ),
-    [],
+    [Dismiss],
   )
 
   const renderNavigationChildItem = useCallback(
@@ -68,14 +73,16 @@ export const Navigator = (props: NavigatorProps) => {
     (it: NavigationItemWithChildren) => (
       <>
         <NavCategory value={it.title}>
-          <NavCategoryItem icon={it.icon && <it.icon />}>{it.title}</NavCategoryItem>
+          <NavCategoryItem icon={it.icon ? <it.icon /> : <Dismiss />}>
+            {it.title}
+          </NavCategoryItem>
           <NavSubItemGroup>
             {it.children.map((child) => renderNavigationChildItem(child))}
           </NavSubItemGroup>
         </NavCategory>
       </>
     ),
-    [renderNavigationChildItem],
+    [renderNavigationChildItem, Dismiss],
   )
 
   const renderNavigationGroup = useCallback(
@@ -109,7 +116,9 @@ export const Navigator = (props: NavigatorProps) => {
           <AppItemStatic>{props.systemName}</AppItemStatic>
 
           {props.navigationItems.map((it) =>
-            isNavigationGroup(it) ? (
+            it === 'divider' ? (
+              <NavDivider />
+            ) : isNavigationGroup(it) ? (
               renderNavigationGroup(it)
             ) : isNavigationItemWithChildren(it) ? (
               renderNavigationItemWithChildren(it)

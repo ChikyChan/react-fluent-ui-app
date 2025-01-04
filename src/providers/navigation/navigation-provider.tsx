@@ -1,12 +1,19 @@
 import { PropsWithChildren, useMemo } from 'react'
-import { Album20Filled, Album20Regular, bundleIcon, Person20Filled, Person20Regular } from '@fluentui/react-icons'
+import {
+  Album20Filled,
+  Album20Regular,
+  bundleIcon,
+  Person20Filled,
+  Person20Regular,
+} from '@fluentui/react-icons'
 import { NavigationContext } from './navigation-context'
+import { NavigationContextItemCollectionType } from './types'
 
 export const NavigationProvider = (props: PropsWithChildren) => {
   const Album = bundleIcon(Album20Filled, Album20Regular)
   const Person = bundleIcon(Person20Filled, Person20Regular)
 
-  const navigaionGroups = useMemo(() => {
+  const navigaionGroups: NavigationContextItemCollectionType = useMemo(() => {
     return [
       {
         title: 'Section 1',
@@ -16,41 +23,39 @@ export const NavigationProvider = (props: PropsWithChildren) => {
             icon: Album,
             children: [
               {
-                title: 'Item 1',
+                title: 'Page 1',
                 icon: Person,
                 url: '',
               },
               {
-                title: 'Item 2',
-                icon: 'icon',
+                title: 'Page 2',
                 url: '',
               },
             ],
           },
           {
-            title: 'Item 3',
-            icon: 'icon',
+            title: 'Page 3',
             url: '',
           },
         ],
       },
+      'divider',
       {
         title: 'Section 2',
         items: [
           {
-            title: 'Item 4',
+            title: 'Page 4',
             icon: Person,
             url: '',
           },
           {
-            title: 'Item 5',
-            icon: 'icon',
+            title: 'Page 5',
             url: '',
           },
         ],
       },
     ]
-  }, [Album])
+  }, [Person, Album])
 
   return (
     <NavigationContext.Provider value={navigaionGroups}>

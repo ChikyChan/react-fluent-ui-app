@@ -1,4 +1,4 @@
-import { FluentIcon } from "@fluentui/react-icons"
+import { FluentIcon } from '@fluentui/react-icons'
 
 export type NavigationGroup = {
   title: string
@@ -15,20 +15,28 @@ export type NavigationItem = {
   title: string
 }
 
+export type NavigationContextItemType =
+  | NavigationGroup
+  | NavigationItemWithChildren
+  | NavigationItem
+  | 'divider'
+
+export type NavigationContextItemCollectionType = NavigationContextItemType[]
+
 export const isNavigationGroup = (
-  item: NavigationGroup | NavigationItemWithChildren | NavigationItem,
+  item: NavigationContextItemType,
 ): item is NavigationGroup => {
-  return 'items' in item
+  return item !== 'divider' && 'items' in item
 }
 
 export const isNavigationItemWithChildren = (
-  item: NavigationGroup | NavigationItemWithChildren | NavigationItem,
+  item: NavigationContextItemType,
 ): item is NavigationItemWithChildren => {
-  return 'children' in item
+  return item !== 'divider' && 'children' in item
 }
 
 export const isNavigationItem = (
-  item: NavigationGroup | NavigationItemWithChildren | NavigationItem,
+  item: NavigationContextItemType,
 ): item is NavigationItem => {
-  return !('children' in item)
+  return item !== 'divider' && !('children' in item)
 }
