@@ -7,7 +7,7 @@ const useClasses = makeStyles({
   root: {
     overflowY: 'scroll',
     flex: 'auto',
-    padding: `${tokens.spacingHorizontalXXS} ${tokens.spacingHorizontalL}`,
+    padding: `${tokens.spacingHorizontalS} ${tokens.spacingHorizontalL}`,
   },
 })
 

@@ -1,13 +1,13 @@
 import { createContext } from 'react'
-import { createBrowserRouter } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
+import { HomePage } from '../../pages'
 import { NavigationContextType } from './types'
 
 export const NavigationContext = createContext<NavigationContextType>({
   items: [],
-  router: createBrowserRouter([
-    {
-      path: '',
-      element: <></>,
-    },
-  ]),
+  routes: (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+    </Routes>
+  ),
 })

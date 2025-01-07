@@ -24,11 +24,8 @@ export type AppBarProps = {
   }
   handleSignIn: () => void
   handleSignOut: () => void
-}
-
-type InternalAppBarProps = {
   onHambugerClick: () => void
-} & AppBarProps
+}
 
 const useClasses = makeStyles({
   root: {
@@ -54,7 +51,7 @@ const useClasses = makeStyles({
   },
 })
 
-export const AppBar = (props: InternalAppBarProps) => {
+export const AppBar = (props: AppBarProps) => {
   const classes = useClasses()
 
   return (

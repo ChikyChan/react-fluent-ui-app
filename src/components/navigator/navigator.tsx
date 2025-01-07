@@ -1,12 +1,10 @@
-import React, { useCallback, useMemo } from 'react'
-import { Tooltip } from '@fluentui/react-components'
+import React, { useCallback } from 'react'
 import {
   bundleIcon,
   Dismiss20Filled,
   Dismiss20Regular,
 } from '@fluentui/react-icons'
 import {
-  AppItemStatic,
   Hamburger,
   NavCategory,
   NavCategoryItem,
@@ -28,11 +26,9 @@ import {
   NavigationItem,
   NavigationItemWithChildren,
 } from '../../providers'
-import { useNavigate } from 'react-router-dom'
 
 export type NavigatorProps = {
   open: boolean
-  systemName: string
   navigationItems: NavigationContextNavigationItemCollectionType
   onHambugerClick: () => void
   onOpenChange: (open: boolean) => void
@@ -40,20 +36,6 @@ export type NavigatorProps = {
 
 export const Navigator = (props: NavigatorProps) => {
   const Dismiss = bundleIcon(Dismiss20Filled, Dismiss20Regular)
-  const navigate = useNavigate()
-
-  const handleOnSelect = useCallback((value, categoryValue) => {
-
-  }, [])
-
-  const HambugerWithTooltip = useMemo(
-    () => (
-      <Tooltip content={props.systemName} relationship="label">
-        <Hamburger onClick={props.onHambugerClick} />
-      </Tooltip>
-    ),
-    [props.systemName, props.onHambugerClick],
-  )
 
   const renderNavigationItem = useCallback(
     (it: NavigationItem) => (
@@ -121,13 +103,12 @@ export const Navigator = (props: NavigatorProps) => {
         open={props.open}
         onOpenChange={(_, { open }) => props.onOpenChange(open)}
         separator
-        onNavItemSelect={handleOnSelect}
       >
-        <NavDrawerHeader>{HambugerWithTooltip}</NavDrawerHeader>
+        <NavDrawerHeader>
+          <Hamburger onClick={props.onHambugerClick} />
+        </NavDrawerHeader>
 
         <NavDrawerBody>
-          <AppItemStatic>{props.systemName}</AppItemStatic>
-
           {props.navigationItems.map((it, idx) =>
             it === 'divider' ? (
               <NavDivider key={`nav-divider-${idx}`} />

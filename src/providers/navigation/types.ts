@@ -1,6 +1,6 @@
 import { ComponentType } from 'react'
 import { FluentIcon } from '@fluentui/react-icons'
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Routes } from 'react-router-dom'
 
 export type NavigationGroup = {
   title: string
@@ -29,7 +29,7 @@ export type NavigationContextNavigationItemCollectionType = NavigationContextNav
 
 export type NavigationContextType = {
   items: NavigationContextNavigationItemCollectionType,
-  router: ReturnType<typeof createBrowserRouter>,
+  routes: ReturnType<typeof Routes>,
 }
 
 export const isNavigationGroup = (
