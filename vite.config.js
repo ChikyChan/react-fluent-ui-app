@@ -12,7 +12,6 @@ export default defineConfig(({ mode }) => ({
         changeOrigin: true,
         rewrite: (path) => {
           const newPath = path.replace(/^\/api/, '')
-          console.log({ path, newPath })
           return newPath
         },
       },
