@@ -1,6 +1,5 @@
-import { ComponentType } from 'react'
 import { FluentIcon } from '@fluentui/react-icons'
-import { createBrowserRouter, Routes } from 'react-router-dom'
+import { createBrowserRouter, RouteObject } from 'react-router'
 
 export type NavigationGroup = {
   title: string
@@ -8,15 +7,14 @@ export type NavigationGroup = {
 }
 
 export type NavigationItemWithChildren = {
-  children: NavigationItem[]
-} & Pick<NavigationItem, 'title' | 'icon'>
-
-export type NavigationItem = {
   icon?: FluentIcon
-  isLink: boolean
-  path: string
   title: string
-  component: ComponentType
+  children: NavigationItem[]
+}
+
+export type NavigationItem = Exclude<RouteObject, 'children'> & {
+  icon?: FluentIcon
+  title: string
 }
 
 export type NavigationContextNavigationItemType =
@@ -25,11 +23,12 @@ export type NavigationContextNavigationItemType =
   | NavigationItem
   | 'divider'
 
-export type NavigationContextNavigationItemCollectionType = NavigationContextNavigationItemType[]
+export type NavigationContextNavigationItemCollectionType =
+  NavigationContextNavigationItemType[]
 
 export type NavigationContextType = {
-  items: NavigationContextNavigationItemCollectionType,
-  routes: ReturnType<typeof Routes>,
+  items: NavigationContextNavigationItemCollectionType
+  router: ReturnType<typeof createBrowserRouter>
 }
 
 export const isNavigationGroup = (
@@ -47,5 +46,5 @@ export const isNavigationItemWithChildren = (
 export const isNavigationItem = (
   item: NavigationContextNavigationItemType,
 ): item is NavigationItem => {
-  return item !== 'divider' && 'component' in item
+  return item !== 'divider' && 'element' in item
 }

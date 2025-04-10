@@ -1,11 +1,9 @@
-import { useContext } from 'react'
 import { makeStyles } from '@fluentui/react-components'
-import { NavigationContext } from '../../providers'
-import { AppBar, AppBarProps } from './app-bar'
-import { Content, ContentProps } from './content'
-import { Footer, FooterProps } from './footer'
-
-type LayoutProps = AppBarProps & FooterProps & ContentProps
+import { AppBar } from './app-bar'
+import { Content } from './content'
+import { Footer } from './footer'
+import { Outlet } from 'react-router'
+import { memo } from 'react'
 
 const useClasses = makeStyles({
   root: {
@@ -16,17 +14,16 @@ const useClasses = makeStyles({
   },
 })
 
-export const Layout = (props: LayoutProps) => {
+export const Layout = memo(() => {
   const classes = useClasses()
-  const navigationContext = useContext(NavigationContext)
 
   return (
     <div className={classes.root}>
-      <AppBar {...props} />
+      <AppBar />
       <Content>
-        {navigationContext.routes}
+        <Outlet />
       </Content>
-      <Footer {...props} />
+      <Footer />
     </div>
   )
-}
+})

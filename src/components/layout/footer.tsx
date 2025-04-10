@@ -15,14 +15,14 @@ const useClasses = makeStyles({
   },
 })
 
-export const Footer = (props: FooterProps) => {
+export const Footer = () => {
   const classes = useClasses()
 
   return (
     <footer className={classes.root}>
-      <span>{props.environment}</span>
+      <span>Development</span>
       <span> | </span>
-      <span>{props.copyRight}</span>
+      <span>© 2024 Chiky Chen</span>
     </footer>
   )
 }

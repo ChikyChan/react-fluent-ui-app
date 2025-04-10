@@ -17,7 +17,7 @@ import {
   NavSubItem,
   NavSubItemGroup,
 } from '@fluentui/react-nav-preview'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import {
   isNavigationGroup,
   isNavigationItem,
@@ -41,7 +41,9 @@ export const Navigator = (props: NavigatorProps) => {
 
   const handleNavItemClick = useCallback(
     (it: NavigationItem) => {
-      navigate(it.path)
+      if (it.path) {
+        navigate(it.path)
+      }
       props.onHambugerClick()
     },
     [props, navigate],
@@ -50,7 +52,6 @@ export const Navigator = (props: NavigatorProps) => {
   const renderNavigationItem = useCallback(
     (it: NavigationItem, sectionName?: string) => (
       <NavItem
-        href={it.isLink ? it.path : undefined}
         icon={it.icon ? <it.icon /> : <Dismiss />}
         key={`nav-item-${it.title}`}
         value={sectionName ? `${sectionName}-${it.title}` : it.title}
@@ -65,7 +66,6 @@ export const Navigator = (props: NavigatorProps) => {
   const renderNavigationChildItem = useCallback(
     (it: NavigationItem, categoryName: string, sectionName?: string) => (
       <NavSubItem
-        href={it.isLink ? it.path : undefined}
         key={
           sectionName
             ? `nav-section-${sectionName}-category-${categoryName}-sub-item-${it.title}`

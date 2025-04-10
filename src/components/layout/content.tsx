@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react'
 import { makeStyles, tokens } from '@fluentui/react-components'
 
-export type ContentProps = {} & PropsWithChildren
+export type ContentProps = PropsWithChildren
 
 const useClasses = makeStyles({
   root: {

@@ -3,11 +3,12 @@ import {
   Album20Filled,
   Album20Regular,
   bundleIcon,
+  Home20Filled,
+  Home20Regular,
   Person20Filled,
   Person20Regular,
 } from '@fluentui/react-icons'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Navigator } from '../../components'
+import { createBrowserRouter, RouteObject } from 'react-router'
 import {
   HomePage,
   PageFive,
@@ -17,29 +18,30 @@ import {
   PageThree,
   PageTwo,
 } from '../../pages'
-import { env } from '../../utilities'
 import { NavigationContext } from './navigation-context'
 import {
   isNavigationGroup,
   isNavigationItem,
   isNavigationItemWithChildren,
   NavigationContextNavigationItemCollectionType,
-  NavigationItem,
 } from './types'
+import { Layout } from '../../components'
 
-type NavigationProviderProps = PropsWithChildren & {
-  open: boolean
-  handleHambugerClick: () => void
-  onNavigatorOpenChange: (open: boolean) => void
-}
+type NavigationProviderProps = PropsWithChildren
 
 export const NavigationProvider = (props: NavigationProviderProps) => {
   const Album = bundleIcon(Album20Filled, Album20Regular)
   const Person = bundleIcon(Person20Filled, Person20Regular)
+  const Home = bundleIcon(Home20Filled, Home20Regular)
 
   const navigaionItems: NavigationContextNavigationItemCollectionType =
     useMemo(() => {
       return [
+        {
+          title: 'Home',
+          icon: Home,
+          element: <HomePage />,
+        },
         {
           title: 'Section 1',
           items: [
@@ -48,20 +50,20 @@ export const NavigationProvider = (props: NavigationProviderProps) => {
               icon: Album,
               children: [
                 {
-                  component: PageOne,
+                  element: <PageOne />,
                   title: 'Page 1',
                   icon: Person,
                   path: '/page-one',
                 },
                 {
-                  component: PageTwo,
+                  element: <PageTwo />,
                   title: 'Page 2',
                   path: '/page-two',
                 },
               ],
             },
             {
-              component: PageThree,
+              element: <PageThree />,
               title: 'Page 3',
               path: '/page-three',
             },
@@ -72,35 +74,23 @@ export const NavigationProvider = (props: NavigationProviderProps) => {
           title: 'Section 2',
           items: [
             {
-              component: PageFour,
+              element: <PageFour />,
               title: 'Page 4',
               icon: Person,
               path: '/page-four',
             },
             {
-              component: PageFive,
+              element: <PageFive />,
               title: 'Page 5',
               path: '/page-five',
             },
           ],
         },
       ] as NavigationContextNavigationItemCollectionType
-    }, [Person, Album])
+    }, [Person, Album, Home])
 
-  const routes = useMemo(() => {
-    const renderRoute = (
-      it: Exclude<NavigationItem, 'divider'>,
-    ): ReturnType<typeof Route> => {
-      return (
-        <Route
-          key={it.path}
-          path={it.path}
-          element={it.component ? <it.component /> : null}
-        />
-      )
-    }
-
-    const flatNavigationItems = [] as NavigationItem[]
+  const router = useMemo(() => {
+    const flatNavigationItems = [] as RouteObject[]
 
     navigaionItems.forEach((it) => {
       if (isNavigationItem(it)) {
@@ -118,33 +108,31 @@ export const NavigationProvider = (props: NavigationProviderProps) => {
       }
     })
 
-    return (
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        {flatNavigationItems
-          .map((it) => renderRoute(it))}
-        <Route path="/not-found" element={<PageNotFound />}></Route>
-        <Route path="*" element={<PageNotFound />}></Route>
-      </Routes>
-    )
+    return createBrowserRouter([
+      {
+        Component: Layout,
+        children: flatNavigationItems.concat([
+          {
+            path: 'not-found',
+            element: <PageNotFound />,
+          },
+          {
+            path: '*',
+            element: <PageNotFound />,
+          },
+        ]),
+      },
+    ])
   }, [navigaionItems])
 
   return (
     <NavigationContext.Provider
       value={{
         items: navigaionItems,
-        routes: routes,
+        router: router,
       }}
     >
-      <BrowserRouter basename={env.BASE_URL ?? '/'}>
-        <Navigator
-          open={props.open}
-          navigationItems={navigaionItems}
-          onHambugerClick={props.handleHambugerClick}
-          onOpenChange={props.onNavigatorOpenChange}
-        />
-        {props.children}
-      </BrowserRouter>
+      {props.children}
     </NavigationContext.Provider>
   )
 }
